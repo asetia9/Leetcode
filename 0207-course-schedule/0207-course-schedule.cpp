@@ -1,40 +1,38 @@
 class Solution {
 public:
-    
-    bool dfs(vector<int> graph[],int idx,vector<bool>& visited,vector<bool>&order){
-        visited[idx]=true;
-        order[idx]=true;
-        for(int ele:graph[idx]){
-            if(!visited[ele]&&dfs(graph,ele,visited,order)){
-                return true;
-            }
-            if(order[ele]==true){
-                return true;
-            }
-            
-            
+    bool cycleDetect(unordered_map<int,vector<int>> &graph,int idx,vector<bool>&pathVisited,vector<bool>&visited){
+        if(pathVisited[idx]){
+            return true;
         }
-        
-        order[idx]=false;
+        visited[idx]=true;
+        pathVisited[idx]=true;
+        for(int ele:graph[idx]){
+            if(!visited[ele]&&cycleDetect(graph,ele,pathVisited,visited))
+                return true;
+            else if(pathVisited[ele])
+                return true;
+        }
+        pathVisited[idx]=false;
         return false;
+        
     }
     
-    
-    
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        vector<int> graph[numCourses];
-        for(vector<int> edge:prerequisites){
-            graph[edge[0]].push_back(edge[1]);
+    bool canFinish(int numCourses, vector<vector<int>>& pre) {
+        unordered_map<int,vector<int>> graph;
+        for(auto p:pre){
+            graph[p[0]].push_back(p[1]);
         }
-        bool ans;
-        vector<bool> visited(numCourses,0);
-        vector<bool> order(numCourses,0);
+       
+            vector<bool> pathVisited(numCourses,false);
+        vector<bool> visited(numCourses,false);
         for(int i=0;i<numCourses;i++){
-            if(!visited[i]&&dfs(graph,i,visited,order)==true){
+            
+            if(!visited[i]&&cycleDetect(graph,i,pathVisited,visited)){
                 return false;
-                
             }
+
         }
         return true;
+        
     }
 };
