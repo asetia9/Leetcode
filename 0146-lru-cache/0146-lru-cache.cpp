@@ -36,7 +36,7 @@ public:
         m[key]->prev=NULL;
         first=m[key];
     }
-    void addToFirst(int key){
+    void addExisitingNodeToFirst(int key){
          if(first==last ||  m[key]==first){
                 return;
             }
@@ -49,7 +49,7 @@ public:
     }
     int get(int key) {
         if(m.find(key)!=m.end()){
-            addToFirst(key);
+            addExisitingNodeToFirst(key);
             return first->val;
         }
         return -1;
@@ -68,7 +68,7 @@ public:
         
         if(m.find(key)!=m.end()){
             
-           addToFirst(key);
+           addExisitingNodeToFirst(key);
            first->val=value; 
             
         }
