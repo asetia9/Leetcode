@@ -20,44 +20,16 @@ public:
     LRUCache(int capacity) {
         n=capacity;
     }
-    void print(Node *nh){
-        while(nh){
-            cout<<nh->val<<endl;
-            nh=nh->next;
-        }
-    }
     int get(int key) {
         if(m.find(key)!=m.end()){
-            if(first==m[key]){
-                return first->val;
-            }
-            else if(m[key]==last){
-                m[key]->prev->next=NULL;
-                last=m[key]->prev;
-                m[key]->prev=NULL;
-                m[key]->next=first;
-                first->prev=m[key];
-                first=m[key];
-                // print(first);
-                return first->val;
-            }
-            m[key]->prev->next = m[key]->next;
-            m[key]->next->prev = m[key]->prev;
-            m[key]->next = first;
-            first->prev=m[key];
-            m[key]->prev=NULL;
-            first=m[key];
-            return first->val;
+            addToFirst(key);
+           return first->val;
             
         }
         return -1;
     }
-   
-    void put(int key, int value) {
-        // print(first);
-        if(m.find(key)!=m.end()){
-            if(first==last ||  m[key]==first){
-                m[key]->val=value;
+    void addToFirst(int key){
+         if(first==last ||  m[key]==first){
                 return;
             }
             else if(m[key]==last){
@@ -67,8 +39,6 @@ public:
                 first->prev=m[key];
                 m[key]->prev=NULL;
                 first=m[key];
-                m[key]->val=value;
-                
                 return;
             }
             m[key]->prev->next = m[key]->next;
@@ -77,7 +47,13 @@ public:
             m[key]->prev = NULL;
             first->prev = m[key];
             first = m[key];
-            first->val=value;
+    }
+   
+    void put(int key, int value) {
+        // print(first);
+        if(m.find(key)!=m.end()){
+           addToFirst(key);
+           first->val=value; 
         }
         else{
             if(m.size()<n){
