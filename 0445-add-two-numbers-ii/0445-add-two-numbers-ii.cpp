@@ -10,59 +10,57 @@
  */
 class Solution {
 public:
-    ListNode *reverse(ListNode *head){
-        ListNode *curr=head;
-        ListNode *prev=NULL;
-        while(curr){
-            ListNode *next=curr->next;
-            curr->next=prev;
-            prev=curr;
-            curr=next;
+    stack<int> makeStack(ListNode *l1){
+        stack<int> st1;
+        while(l1){
+            st1.push(l1->val);
+            l1=l1->next;
         }
-        return prev;
-    }
-    void add(ListNode *l1, ListNode *l2, int carry, ListNode *nhead){
-        if(!l1&&!l2){
-            if(carry){
-                nhead->val=carry;
-                nhead->next=new ListNode(-1);
-                nhead=nhead->next;
-            }
-            return;
-        }
-        else if(!l1){
-            nhead->val = (l2->val +carry)%10;
-            carry = (l2->val+carry)/10;
-            nhead->next = new ListNode(-1);
-            nhead=nhead->next;
-            add(l1,l2->next,carry,nhead); 
-        }
-        else if(!l2){
-            nhead->val = (l1->val+carry)%10;
-            carry = (l1->val+carry)/10;
-            nhead->next = new ListNode(-1);
-            nhead=nhead->next;
-            add(l1->next,l2,carry,nhead);
-        }
-        else{
-            nhead->val = (l1->val+l2->val +carry)%10;
-            carry = (l1->val+l2->val+carry)/10;
-            nhead->next = new ListNode(-1);
-            nhead=nhead->next;
-            add(l1->next,l2->next,carry,nhead);
-        }
-        
+        return st1;
     }
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        l1=reverse(l1);
-        // return l1;
-        l2=reverse(l2);
-        // return l2;
-        ListNode *nhead = new ListNode(-1);
+        stack<int> st1;
+        stack<int> st2;
+        st1 = makeStack(l1);
+        st2 = makeStack(l2);
+        int carry=0;
+        ListNode *nh = new ListNode(-1);
+        int value;
+        stack<int> output;
+        ListNode *temp=nh;
+        while(st1.size()||st2.size()){
+            if(!st2.size()){
+                value = st1.top()+carry;
+                st1.pop();
+            }
+            else if(!st1.size()){
+                value = st2.top()+carry;
+                st2.pop();
+            }
+            else if(st1.size()&&st2.size()){
+                value = st1.top()+st2.top()+carry;
+                st1.pop();
+                st2.pop();
+            }
+            carry=value/10;
+            output.push(value%10);
+        }
+        if(carry){
+            output.push(carry);
+        }
+        while(output.size()){
+            nh->val=output.top();
+            output.pop();
+            nh->next = new ListNode(-1);
+            nh=nh->next;
+        }
+        ListNode *t=temp;
+        while(t->next->val!=-1){
+            t=t->next;
+        }
+        t->next=NULL;
         
-        add(l1,l2,0,nhead);
-        // cout<<nhead->next->val<<endl;
+        return temp;
         
-        return reverse(nhead)->next;
     }
 };
