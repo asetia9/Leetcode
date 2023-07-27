@@ -9,7 +9,6 @@ public:
         for(int i=0;i<batteries.size();i++,n--){
             if(batteries[i]<=sum/n)
                 break;
-            else
                 sum-=batteries[i];
             
         }
