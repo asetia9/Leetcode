@@ -23,8 +23,8 @@ public:
     
     
     double soupServings(int n) {
-        if(n>5000)
-            return 1;
+        if(n>4300)
+            return 1.0;
         vector<vector<double>> dp(n+1,vector<double>(n+1,-1.0));
         return helper(n,n,dp);    
     }
