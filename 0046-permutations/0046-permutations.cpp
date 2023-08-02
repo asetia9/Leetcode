@@ -1,7 +1,7 @@
 class Solution {
 public:
-    void recurse(vector<vector<int>> &ans, vector<int>&temp, vector<bool>&visited, vector<int> &nums, int n){
-        if(!n){
+    void recurse(vector<vector<int>> &ans, vector<int>&temp, vector<bool>&visited, vector<int> &nums){
+        if(temp.size()==nums.size()){
             ans.push_back(temp);
             return;
         }
@@ -9,7 +9,7 @@ public:
             if(!visited[i]){
                 visited[i]=true;
                 temp.push_back(nums[i]);
-                recurse(ans,temp,visited,nums,n-1);
+                recurse(ans,temp,visited,nums);
                 temp.pop_back();
                 visited[i]=false;
             }
@@ -21,8 +21,7 @@ public:
         vector<vector<int>> ans;
         vector<int> temp;
         vector<bool> visited(nums.size(),false);
-        int n = nums.size();
-        recurse(ans,temp,visited,nums,n);
+        recurse(ans,temp,visited,nums);
         return ans;
         
     }
