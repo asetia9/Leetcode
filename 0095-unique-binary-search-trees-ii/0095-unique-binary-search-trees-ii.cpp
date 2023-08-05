@@ -23,34 +23,14 @@ public:
         for(int i=low;i<=high;i++){
             vector<TreeNode *> left = recurse(low,i-1);
             vector<TreeNode *> right = recurse(i+1,high);
-            if(left.size()&&right.size()){
-                for(TreeNode * r:right){
-                    for(TreeNode *l:left){
-                        
-                        TreeNode *root = new TreeNode(i);
-                        root->left = l;
-                        root->right = r;
-                        ans.push_back(root);
-                    }
-                }
-            }
-            else if(left.size()){
+            for(TreeNode * r:right){
                 for(TreeNode *l:left){
                     TreeNode *root = new TreeNode(i);
-                    root->left=l;
+                    root->left = l;
+                    root->right = r;
                     ans.push_back(root);
                 }
-                
             }
-            else if(right.size()){
-                for(TreeNode *r:right){
-                    TreeNode *root = new TreeNode(i);
-                    root->left=r;
-                    ans.push_back(root);
-                }
-                
-            }
-            
         }
         
         return ans;
