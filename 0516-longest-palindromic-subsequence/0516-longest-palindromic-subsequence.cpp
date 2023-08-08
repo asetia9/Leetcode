@@ -18,7 +18,24 @@ public:
         for(int i=s.size()-1;i>=0;i--){
             t+=s[i];
         }
-        vector<vector<int>> dp(s.size(),vector<int>(s.size(),-1));
-        return lcs(s,t,0,0,dp);
+        vector<vector<int>> dp(s.size()+1,vector<int>(s.size()+1,-1));
+        for(int i=s.size();i>=0;i--){
+            for(int j=s.size();j>=0;j--){
+                if(i==s.size()||j==s.size()){
+                    dp[i][j]=0;
+                }
+                else if(s[i]==t[j]){
+                    dp[i][j] = 1+dp[i+1][j+1];
+                }
+                else{
+                    dp[i][j]=max(dp[i+1][j],dp[i][j+1]);
+                }
+                
+            }
+            
+            
+        }
+        
+        return dp[0][0];
     }
 };
