@@ -23,7 +23,35 @@ public:
     
     
     int maxProfit(int k, vector<int>& prices) {
-        vector<vector<vector<int>>> dp(prices.size(),vector<vector<int>>(2,vector<int>(k+1,-1)));
-        return recurse(prices,0,true,k,dp);
+        vector<vector<vector<int>>> dp(prices.size()+1,vector<vector<int>>(2,vector<int>(k+1,0)));
+        for(int i=prices.size()-1;i>=0;i--){
+            for(int j=0;j<=1;j++){
+                
+                for(int l=1;l<=k;l++){
+                    int maxi=0;
+                    if(j){
+                        maxi=max(maxi,-prices[i]+dp[i+1][0][l]);
+                        maxi=max(maxi,dp[i+1][1][l]);
+                    }
+                    else{
+                        maxi=max(maxi,prices[i]+dp[i+1][1][l-1]);
+                        maxi=max(maxi,dp[i+1][0][l]);
+                    }
+                    
+                    
+                   dp[i][j][l]=maxi; 
+                    
+                }
+                
+                
+                
+            }
+            
+            
+            
+        }
+        
+        
+        return dp[0][1][k];
     }
 };
