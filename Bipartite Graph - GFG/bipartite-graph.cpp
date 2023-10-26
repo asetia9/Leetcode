@@ -5,33 +5,30 @@ using namespace std;
 // } Driver Code Ends
 class Solution {
 public:
-    
+    bool canColor(vector<int>adj[], int i, vector<int> &color, int prev){
+        
+        if(prev==-1) color[i]=0;
+        else color[i]=!prev;
+        bool ans=true;
+        for(int ele:adj[i]){
+            
+            if(color[ele]==color[i]) return false;
+            else if(color[ele]==-1){
+                ans= ans&canColor(adj,ele,color,color[i]);
+            }
+        }
+        
+        return ans;
+        
+    }
 	bool isBipartite(int V, vector<int>adj[]){
-	    // Code here
 	    vector<int> color(V,-1);
-	    queue<int> q;
-	    
 	    for(int i=0;i<V;i++){
-	        if(color[i]!=-1) continue;
-    	    q.push(i);
-    	    color[i]=0;
-    	    while(q.size()){
-    	        int rm = q.front();
-    	        q.pop();
-    	        for(int ele:adj[rm]){
-    	            if(color[ele]==color[rm]){
-    	                return false;
-    	            }
-    	            else if(color[ele]==-1){
-    	                color[ele]=!color[rm];
-    	                q.push(ele);
-    	            }
-    	        }
-    	    }
+	        if(color[i]==-1&&!canColor(adj,i,color,-1)){
+	            return false;
+	        }
 	    }
 	    return true;
-	    
-	    
 	}
 
 };
